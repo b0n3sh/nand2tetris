@@ -13,5 +13,5 @@ CHIP Not {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    Nand(a=in, b=in, out=out); // If a=b, the output is output is reversed, 0-0=>1, 1-1=>0. 
 }
