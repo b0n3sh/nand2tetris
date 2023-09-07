@@ -13,5 +13,54 @@ CHIP Inc16 {
     OUT out[16];
 
     PARTS:
-   // Put you code here:
+        Not(in=in[0], out=out[0]);// We always flip out[0].
+        HalfAdder(a=in[0], b=in[1], sum=out[1], carry=in0Carryin1);//Sum (out[0]^out[1]) to the output, and carry (out[0]out[1]) to the next position.
+        HalfAdder(a=in[2], b=in0Carryin1, sum=out[2], carry=in0Carrytoin2);// Same steps.
+        HalfAdder(a=in[3], b=in0Carrytoin2, sum=out[3], carry=in0Carrytoin3);// Same steps.
+        HalfAdder(a=in[4], b=in0Carrytoin3, sum=out[4], carry=in0Carrytoin4);// Same steps.
+        HalfAdder(a=in[5], b=in0Carrytoin4, sum=out[5], carry=in0Carrytoin5);// Same steps.
+        HalfAdder(a=in[6], b=in0Carrytoin5, sum=out[6], carry=in0Carrytoin6);// Same steps.
+        HalfAdder(a=in[7], b=in0Carrytoin6, sum=out[7], carry=in0Carrytoin7);// Same steps.
+        HalfAdder(a=in[8], b=in0Carrytoin7, sum=out[8], carry=in0Carrytoin8);// Same steps.
+        HalfAdder(a=in[9], b=in0Carrytoin8, sum=out[9], carry=in0Carrytoin9);// Same steps.
+        HalfAdder(a=in[10], b=in0Carrytoin9, sum=out[10], carry=in0Carrytoin10);// Same steps.
+        HalfAdder(a=in[11], b=in0Carrytoin10, sum=out[11], carry=in0Carrytoin11);// Same steps.
+        HalfAdder(a=in[12], b=in0Carrytoin11, sum=out[12], carry=in0Carrytoin12);// Same steps.
+        HalfAdder(a=in[13], b=in0Carrytoin12, sum=out[13], carry=in0Carrytoin13);// Same steps.
+        HalfAdder(a=in[14], b=in0Carrytoin13, sum=out[14], carry=in0Carrytoin14);// Same steps.
+        HalfAdder(a=in[15], b=in0Carrytoin14, sum=out[15], carry=in0Carrytoin15);// Same steps, discard the last carry.
+
+    /** My previous implementation, was too complex, from just using only basic chips, used the abstraction (FullAdders) to make it more readable.
+    PARTS:
+        Not(in=in[0], out=out[0]);
+        Xor(a=in[0], b=in[1], out=out[1]);
+        And(a=in[0], b=in[1], out=in0Andin1); 
+        And(a=in[2], b=in0Andin1, out=in0Andtoin2); 
+        And(a=in[3], b=in0Andtoin2, out=in0Andtoin3); 
+        And(a=in[4], b=in0Andtoin3, out=in0Andtoin4); 
+        And(a=in[5], b=in0Andtoin4, out=in0Andtoin5); 
+        And(a=in[6], b=in0Andtoin5, out=in0Andtoin6); 
+        And(a=in[7], b=in0Andtoin6, out=in0Andtoin7); 
+        And(a=in[8], b=in0Andtoin7, out=in0Andtoin8); 
+        And(a=in[9], b=in0Andtoin8, out=in0Andtoin9); 
+        And(a=in[10], b=in0Andtoin9, out=in0Andtoin10); 
+        And(a=in[11], b=in0Andtoin10, out=in0Andtoin11); 
+        And(a=in[12], b=in0Andtoin11, out=in0Andtoin12); 
+        And(a=in[13], b=in0Andtoin12, out=in0Andtoin13); 
+        And(a=in[14], b=in0Andtoin13, out=in0Andtoin14); 
+        Xor(a=in[2], b=in0Andin1, out=out[2]);
+        Xor(a=in[3], b=in0Andtoin2, out=out[3]);
+        Xor(a=in[4], b=in0Andtoin3, out=out[4]);
+        Xor(a=in[5], b=in0Andtoin4, out=out[5]);
+        Xor(a=in[6], b=in0Andtoin5, out=out[6]);
+        Xor(a=in[7], b=in0Andtoin6, out=out[7]);
+        Xor(a=in[8], b=in0Andtoin7, out=out[8]);
+        Xor(a=in[9], b=in0Andtoin8, out=out[9]);
+        Xor(a=in[10], b=in0Andtoin9, out=out[10]);
+        Xor(a=in[11], b=in0Andtoin10, out=out[11]);
+        Xor(a=in[12], b=in0Andtoin11, out=out[12]);
+        Xor(a=in[13], b=in0Andtoin12, out=out[13]);
+        Xor(a=in[14], b=in0Andtoin13, out=out[14]);
+        Xor(a=in[15], b=in0Andtoin14, out=out[15]);
+    **/
 }
