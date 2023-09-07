@@ -13,5 +13,20 @@ CHIP Add16 {
     OUT out[16];
 
     PARTS:
-   // Put you code here:
+        HalfAdder(a=a[0], b=b[0], sum=out[0], carry=a0Plusb0);// First a[0]+b[0], no previous carry.
+        FullAdder(a=a[1], b=b[1], c=a0Plusb0, sum=out[1], carry=a1Plusb1);// Then, a[1]+b[1] + carry of a[0]+b[0].
+        FullAdder(a=a[2], b=b[2], c=a1Plusb1, sum=out[2], carry=a2Plusb2);// Then, a[2]+b[2] + carry of a[1]+b[1].
+        FullAdder(a=a[3], b=b[3], c=a2Plusb2, sum=out[3], carry=a3Plusb3);// Then, a[3]+b[3] + carry of a[2]+b[2].
+        FullAdder(a=a[4], b=b[4], c=a3Plusb3, sum=out[4], carry=a4Plusb4);// Then, a[4]+b[4] + carry of a[3]+b[3].
+        FullAdder(a=a[5], b=b[5], c=a4Plusb4, sum=out[5], carry=a5Plusb5);// Then, a[5]+b[5] + carry of a[4]+b[4].
+        FullAdder(a=a[6], b=b[6], c=a5Plusb5, sum=out[6], carry=a6Plusb6);// Then, a[6]+b[6] + carry of a[5]+b[5].
+        FullAdder(a=a[7], b=b[7], c=a6Plusb6, sum=out[7], carry=a7Plusb7);// Then, a[7]+b[7] + carry of a[6]+b[6].
+        FullAdder(a=a[8], b=b[8], c=a7Plusb7, sum=out[8], carry=a8Plusb8);// Then, a[8]+b[8] + carry of a[7]+b[7].
+        FullAdder(a=a[9], b=b[9], c=a8Plusb8, sum=out[9], carry=a9Plusb9);// Then, a[9]+b[9] + carry of a[8]+b[8].
+        FullAdder(a=a[10], b=b[10], c=a9Plusb9, sum=out[10], carry=a10Plusb10);// Then, a[10]+b[10] + carry of a[9]+b[9].
+        FullAdder(a=a[11], b=b[11], c=a10Plusb10, sum=out[11], carry=a11Plusb11);// Then, a[11]+b[11] + carry of a[10]+b[10].
+        FullAdder(a=a[12], b=b[12], c=a11Plusb11, sum=out[12], carry=a12Plusb12);// Then, a[12]+b[12] + carry of a[11]+b[11].
+        FullAdder(a=a[13], b=b[13], c=a12Plusb12, sum=out[13], carry=a13Plusb13);// Then, a[13]+b[13] + carry of a[12]+b[12].
+        FullAdder(a=a[14], b=b[14], c=a13Plusb13, sum=out[14], carry=a14Plusb14);// Then, a[14]+b[14] + carry of a[13]+b[13].
+        FullAdder(a=a[15], b=b[15], c=a14Plusb14, sum=out[15], carry=a15Plusb15);// Then, a[15]+b[15] + carry of a[14]+b[14].
 }
