@@ -42,5 +42,19 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+        Mux16(a=x, b=false, sel=zx, out=ifzx); // if (zx == 1) set x = 0        // 16-bit constant
+        Mux16(a=y, b=false, sel=zy, out=ifzy); // if (zy == 1) set y = 0        // 16-bit constant
+        Not16(in=ifzx, out=notifzx); // Negate the temporal output of z
+        Not16(in=ifzy, out=notifzy); // Negate the temporal output of y
+        Mux16(a=ifzx, b=notifzx, sel=nx, out=ifnotifzx); // if (ny == 1) set y = !y       // bitwise not
+        Mux16(a=ifzy, b=notifzy, sel=ny, out=ifnotifzy); // if (ny == 1) set y = !y       // bitwise not
+        And16(a=ifnotifzx, b=ifnotifzy, out=ifxAndy); // if (f == 0)  set out = x & y  // bitwise and
+        Add16(a=ifnotifzx, b=ifnotifzy, out=ifxAddy); // if (f == 1)  set out = x + y  // integer 2's complement addition
+        Mux16(a=ifxAndy, b=ifxAddy, sel=f, out=ifAddelseAnd); // Select between Adding or And the values
+        Not16(in=ifAddelseAnd, out=notifAddelseAnd); // Negate the f(x,y) output.
+        Mux16(a=ifAddelseAnd, b=notifAddelseAnd, sel=no, out=out, out[15]=ng, out[0..7]=outzr1, out[8..15]=outzr2); // if (no == 2) set out = !out // bitwise not
+        Or8Way(in=outzr1, out=oroutzr1); // Check if any of first 7 bits (LSB) is 1.
+        Or8Way(in=outzr2, out=oroutzr2); // Check if the rest of bits is 1.
+        Or(a=oroutzr1, b=oroutzr2, out=nozr); // If none of the bits is 1, we don't have a 0.
+        Not(in=nozr, out=zr); // We negate it. 
 }
