@@ -14,5 +14,6 @@ CHIP Bit {
     OUT out;
 
     PARTS:
-    // Put your code here:
+        Mux(a=outdff, b=in, sel=load, out=nextvalue); // If load 1, select in, else keep previous output from t-1.
+        DFF(in=nextvalue, out=outdff, out=out); // Set the state for the new t.
 }
