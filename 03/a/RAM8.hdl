@@ -15,5 +15,14 @@ CHIP RAM8 {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+        DMux8Way(in=load, sel=address, a=register0, b=register1, c=register2, d=register3, e=register4, f=register5, g=register6, h=register7); // Distribute the load on the correct register.
+        Register(in=in, load=register0, out=outregister0); // Get the possible in value and the possible load, then output to the multiplexer.
+        Register(in=in, load=register1, out=outregister1); // Get the possible in value and the possible load, then output to the multiplexer.
+        Register(in=in, load=register2, out=outregister2); // Get the possible in value and the possible load, then output to the multiplexer.
+        Register(in=in, load=register3, out=outregister3); // Get the possible in value and the possible load, then output to the multiplexer.
+        Register(in=in, load=register4, out=outregister4); // Get the possible in value and the possible load, then output to the multiplexer.
+        Register(in=in, load=register5, out=outregister5); // Get the possible in value and the possible load, then output to the multiplexer.
+        Register(in=in, load=register6, out=outregister6); // Get the possible in value and the possible load, then output to the multiplexer.
+        Register(in=in, load=register7, out=outregister7); // Get the possible in value and the possible load, then output to the multiplexer.
+        Mux8Way16(a=outregister0, b=outregister1, c=outregister2, d=outregister3, e=outregister4, f=outregister5, g=outregister6, h=outregister7, sel=address, out=out); // Multiplex the correct register into the output.
 }
