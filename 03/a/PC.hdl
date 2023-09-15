@@ -16,5 +16,10 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+        Inc16(in=previousvalue, out=incremented); // We took the value of the current output and increment it.
+        Mux16(a=incremented, b=in, sel=load, out=chooseincOrin); // We choose either between the +1 of the previous value or an arbitrary value.
+        Mux16(a=chooseincOrin, b=false, sel=reset, out=chooseincOrinOrreset); // Choose between reset or (in or inc).
+        Or(a=load, b=reset, out=loadOrreset); // Load or reset
+        Or(a=loadOrreset, b=inc, out=loadOrresetOrinc); // (Load or reset or inc)
+        Register(in=chooseincOrinOrreset, out=out, out=previousvalue, load=loadOrresetOrinc); // If (Load or reset or inc), then we get the input, if not, output=output-1.
 }
