@@ -12,3 +12,79 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+
+// Pseudocode
+// 
+// (RESTART)
+//     if (KBD == 0) goto WHITE;
+//     for (i=0; i<8192; i++):
+//         SCREEN[i] = -1;
+//         i++;
+//     JMP RESTART
+// (WHITE)
+//     if SCREEN 0 goto START;
+//     for (i=0; i<8192; i++):
+//         SCREEN[i] = -1;
+    
+    //screen_size = 8192
+    @8192
+    D=A
+    @screen_size
+    M=D
+(RESTART)
+    // if (KBD == 0) goto WHITE;
+    @KBD
+    D=M
+    @WHITE
+    D;JEQ 
+    // Paint black.
+    @i
+    M=0
+    // for (i=0; i<8192; i++):
+    (LOOPBLACK)
+        @screen_size
+        D=M
+        @i
+        D=D-M
+        @RESTART
+        D;JEQ
+        // Paint.
+        @i
+        D=M
+        @SCREEN
+        A=A+D
+        M=-1
+        // i++
+        @i
+        M=M+1
+        // KEEP LOOPING.
+        @LOOPBLACK
+        0;JMP
+(WHITE)
+    // if SCREEN[0]=0 goto RESTART;
+    @SCREEN
+    D=M
+    @RESTART
+    D;JEQ
+    // else, paint white.
+    @i
+    M=0
+    (LOOPWHITE)
+        @screen_size
+        D=M
+        @i
+        D=D-M
+        @RESTART
+        D;JEQ
+        // Paint.
+        @i
+        D=M
+        @SCREEN
+        A=A+D 
+        M=0
+        // i++
+        @i
+        M=M+1
+        // KEEP LOOPING.
+        @LOOPWHITE
+        0;JMP
