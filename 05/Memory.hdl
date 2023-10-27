@@ -27,5 +27,10 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    DMux4Way(in=load, sel=address[13..14], a=ramLoadA, b=ramLoadB, c=screenLoad, d=ignored); // Choose between RAM or SCREEN if we have a LOAD signal.
+    Or(a=ramLoadA, b=ramLoadB, out=ramLoadAorB); // Get both ranges of RAM address space.
+    RAM16K(in=in, load=ramLoadAorB, address=address[0..13], out=outRam); // RAM
+    Screen(in=in, load=screenLoad, address=address[0..12], out=outScreen); // SCREEN
+    Keyboard(out=outKeyboard); // KBD
+    Mux4Way16(a=outRam, b=outRam, c=outScreen, d=outKeyboard, sel=address[13..14], out=out); // Probe the memory we're looking for.
 }
