@@ -39,5 +39,28 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+    Not(in=instruction[15], out=gotA);
+    And(a=instruction[15], b=instruction[4], out=loadDRegister);
+    Or(a=gotA, b=instruction[5], out=enableARegister);
+    Mux16(a=instruction, b=outALU, sel=instruction[15], out=inRegisterA); // The A register can hold either the instruction value (when using A instructions, for jumps) or the computation from the ALU (when doing C instructions, and we choose to store the data in the A register).
+    ARegister(in=inRegisterA, load=enableARegister, out=outRegisterA, out[0..14]=addressM);
+    DRegister(in=outALU, load=loadDRegister, out=outRegisterD); 
+    Mux16(a=outRegisterA, b=inM, sel=instruction[12], out=outRegisterAorMemory);
+    ALU(x=outRegisterD, y=outRegisterAorMemory, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outALU, out=outM, zr=zeroALU, ng=negALU); // Compute D with A|M
+    And(a=instruction[15], b=instruction[3], out=writeM); // enable writeM if we have C instruction and the store bit of RAM. 
+    Not(in=negALU, out=greaterThan);
+    Not(in=zeroALU, out=noZeroALU);
+    And(a=noZeroALU, b=greaterThan, out=positiveALU);
+    Or(a=zeroALU, b=negALU, out=lessEqual);
+
+    // jmp lgc
+    // Previous implementation was with custom chipset: Mux8Way(a=false, b=greaterThan, c=zeroALU, d=positiveALU, e=negALU, f=noZeroALU, g=lessEqual, h=true, sel=instruction[0..2], out=jumpGuess);
+    And(a=instruction[0], b=positiveALU, out=jPositive);
+    And(a=instruction[1], b=zeroALU, out=jZero);
+    And(a=instruction[2], b=negALU, out=jNegative);
+    Or(a=jPositive, b=jZero, out=jPositiveOrjZero);
+    Or(a=jPositiveOrjZero, b=jNegative, out=jumpGuess);
+    
+    And(a=jumpGuess, b=instruction[15], out=jumpOrNot);
+    PC(in=outRegisterA, load=jumpOrNot, inc=true, reset=reset, out[0..14]=pc);
 }
