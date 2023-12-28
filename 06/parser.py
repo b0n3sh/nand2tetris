@@ -10,7 +10,7 @@ class Parser:
     def _open_file(self, path):
         with open(path, "r") as f:
             for line in f:
-                yield line
+                yield line.strip()
     
     def __iter__(self):
         return self
@@ -37,7 +37,7 @@ class Parser:
     # Initially there is no current instruction.
     def advance(self):
         line = next(self)
-        if re.match("//", line) or line=="\n":
+        if re.match("//", line) or line=="\n" or line=="":
             if self.hasMoreLines():
                 self._current_instruction = self.advance() 
                 return self._current_instruction
@@ -72,7 +72,10 @@ class Parser:
     def dest(self):
         instruction_type = self.instructionType() 
         if instruction_type == "C_INSTRUCTION":
-            return re.search("(\w+)=", self._current_instruction).group(1)
+            if "=" in self._current_instruction:
+                return re.search("(\w+)=", self._current_instruction).group(1)
+            else:
+                return "null"
 
     # Returns the symbolic comp part of the current C-instruction (28 possibilities).
     # Should be called only if instructionType is C_INSTRUCTION
@@ -97,4 +100,3 @@ if __name__ == "__main__":
 
     while my_assembler.hasMoreLines():
         print(my_assembler.advance())
-        print(my_assembler.jump())
