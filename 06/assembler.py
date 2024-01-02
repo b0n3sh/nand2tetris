@@ -7,11 +7,21 @@ import sys
 if len(sys.argv) != 1:
     print("usage: ./assembler.py <assembly_file>")
 
-file_path = "rect/RectL.asm"
+file_path = "rect/Rect.asm"
 
+# [+] First pass [+]
+#   - Keep track of line number
+#   - If label declaration is found (xxx) it keeps track of the line number, for posterior jumps 
 parser_file = parser.Parser(file_path)
+line_number = 0
+while parser_file.hasMoreLines():
+    next_instruction = parser_file.advance()
+    print(f"{next_instruction} => {line_number}")
+    line_number +=1
+    
 
-# Iterae through each line
+# Second pass 
+parser_file = parser.Parser(file_path)
 while parser_file.hasMoreLines():
     next_instruction = parser_file.advance()
     if parser_file.instructionType() == "C_INSTRUCTION":
