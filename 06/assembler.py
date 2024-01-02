@@ -7,7 +7,7 @@ import sys
 if len(sys.argv) != 1:
     print("usage: ./assembler.py <assembly_file>")
 
-file_path = "add/Add.asm"
+file_path = "rect/RectL.asm"
 
 parser_file = parser.Parser(file_path)
 

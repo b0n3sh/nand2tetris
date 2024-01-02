@@ -82,7 +82,17 @@ class Parser:
     def comp(self):
         instruction_type = self.instructionType()
         if instruction_type == "C_INSTRUCTION":
-            return re.search("=([\w+\-]+)", self._current_instruction).group(1)  
+#            print(self._current_instruction)
+            if ";" in self._current_instruction:
+                comp = self._current_instruction.split(";")[0]
+                if "=" in comp:
+                    return comp.split("=")[1]
+                else:
+                    return comp
+            elif "=" in self._current_instruction:
+                return self._current_instruction.split("=")[1]
+            else:
+                return self._current_instruction
 
     # Returns the symbolic jump part of the current C-instruction (8 possibilities).
     # Should be called only if instructionType is C_INSTRUCTION
