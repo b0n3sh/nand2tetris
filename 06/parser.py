@@ -10,7 +10,7 @@ class Parser:
     def _open_file(self, path):
         with open(path, "r") as f:
             for line in f:
-                yield line
+                yield line.strip()
     
     def __iter__(self):
         return self
@@ -37,7 +37,7 @@ class Parser:
     # Initially there is no current instruction.
     def advance(self):
         line = next(self)
-        if re.match("//", line) or line=="\n":
+        if re.match("//", line) or line=="\n" or line=="":
             if self.hasMoreLines():
                 self._current_instruction = self.advance() 
                 return self._current_instruction
@@ -63,23 +63,35 @@ class Parser:
     def symbol(self):
         instruction_type = self.instructionType()
         if instruction_type == "A_INSTRUCTION":
-            return re.search("@(\w+)", self._current_instruction).group(1)
+            return re.search("@([\w\d_\.\$\:]+)", self._current_instruction).group(1).split("/")[0].strip()
         elif instruction_type == "L_INSTRUCTION":
-            return re.search("\((\w+)\)", self._current_instruction).group(1)
+            return re.search("\(([\w\d_\.\$\:]+)\)", self._current_instruction).group(1).split("/")[0].strip()
 
     # Returns the symbolic dest part of the current C-instruction (8 possibilities).
     # Should be called only if instructionType is C_INSTRUCTION
     def dest(self):
         instruction_type = self.instructionType() 
         if instruction_type == "C_INSTRUCTION":
-            return re.search("(\w+)=", self._current_instruction).group(1)
+            if "=" in self._current_instruction:
+                return re.search("(\w+)=", self._current_instruction).group(1).split("/")[0].strip()
+            else:
+                return "null"
 
     # Returns the symbolic comp part of the current C-instruction (28 possibilities).
     # Should be called only if instructionType is C_INSTRUCTION
     def comp(self):
         instruction_type = self.instructionType()
         if instruction_type == "C_INSTRUCTION":
-            return re.search("=([\w+\-]+)", self._current_instruction).group(1)  
+            if ";" in self._current_instruction:
+                comp = self._current_instruction.split(";")[0].split("/")[0].strip()
+                if "=" in comp:
+                    return comp.split("=")[1].strip()
+                else:
+                    return comp
+            elif "=" in self._current_instruction:
+                return self._current_instruction.split("=")[1].split("/")[0].strip()
+            else:
+                return self._current_instruction.split("/")[0].strip()
 
     # Returns the symbolic jump part of the current C-instruction (8 possibilities).
     # Should be called only if instructionType is C_INSTRUCTION
@@ -87,7 +99,7 @@ class Parser:
         instruction_type = self.instructionType()
         if instruction_type == "C_INSTRUCTION":
             if ";" in self._current_instruction:
-                return re.search("(?<=;)\w+", self._current_instruction).group(0)
+                return re.search("(?<=;)\w+", self._current_instruction).group(0).split("/")[0].strip()
             else:
                 return "null"
         
@@ -97,4 +109,3 @@ if __name__ == "__main__":
 
     while my_assembler.hasMoreLines():
         print(my_assembler.advance())
-        print(my_assembler.jump())
