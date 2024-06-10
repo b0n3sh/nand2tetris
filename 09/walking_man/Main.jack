@@ -1,0 +1,83 @@
+class Main {
+    function void walking(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 0);
+        do Memory.poke(memAddress+64, 240);
+        do Memory.poke(memAddress+96, 144);
+        do Memory.poke(memAddress+128, 240);
+        do Memory.poke(memAddress+160, 96);
+        do Memory.poke(memAddress+192, 504);
+        do Memory.poke(memAddress+224, 96);
+        do Memory.poke(memAddress+256, 144);
+        do Memory.poke(memAddress+288, 264);
+        do Memory.poke(memAddress+320, 0);
+        do Memory.poke(memAddress+352, 0);
+        do Memory.poke(memAddress+384, 0);
+        do Memory.poke(memAddress+416, 0);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
+        return;
+    }
+
+    function void standing(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 0);
+        do Memory.poke(memAddress+64, 240);
+        do Memory.poke(memAddress+96, 144);
+        do Memory.poke(memAddress+128, 240);
+        do Memory.poke(memAddress+160, 96);
+        do Memory.poke(memAddress+192, 504);
+        do Memory.poke(memAddress+224, 96);
+        do Memory.poke(memAddress+256, 96);
+        do Memory.poke(memAddress+288, 96);
+        do Memory.poke(memAddress+320, 0);
+        do Memory.poke(memAddress+352, 0);
+        do Memory.poke(memAddress+384, 0);
+        do Memory.poke(memAddress+416, 0);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
+        return;
+    }
+
+    function void cleanFigure(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 0);
+        do Memory.poke(memAddress+64, 0);
+        do Memory.poke(memAddress+96, 0);
+        do Memory.poke(memAddress+128, 0);
+        do Memory.poke(memAddress+160, 0);
+        do Memory.poke(memAddress+192, 0);
+        do Memory.poke(memAddress+224, 0);
+        do Memory.poke(memAddress+256, 0);
+        do Memory.poke(memAddress+288, 0);
+        do Memory.poke(memAddress+320, 0);
+        do Memory.poke(memAddress+352, 0);
+        do Memory.poke(memAddress+384, 0);
+        do Memory.poke(memAddress+416, 0);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
+        return;
+    }
+
+    function void main() {
+        var int currentPosition;
+        let currentPosition = 0;
+        while (currentPosition < 180) {
+            do Main.walking(currentPosition);
+            do Sys.wait(1000);
+            do Main.cleanFigure(currentPosition);
+            let currentPosition = currentPosition + 1;
+            do Main.standing(currentPosition);
+            do Sys.wait(1000);
+            do Main.cleanFigure(currentPosition);
+            let currentPosition = currentPosition + 1;
+        }
+        return;
+    }
+}
