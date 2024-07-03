@@ -65,10 +65,18 @@ class Main {
         return;
     }
 
+    function int getModulus(int dividend, int divisor) {
+        var int quotient;
+        let quotient = (dividend/divisor);
+        do Output.printInt(dividend-(quotient*dividend));
+        return dividend-(dividend*quotient);
+    }
+
     function void main() {
         var int currentPosition;
         let currentPosition = 0;
         while (currentPosition < 180) {
+            do Main.getModulus(currentPosition, 16);
             do Main.walking(currentPosition);
             do Sys.wait(1000);
             do Main.cleanFigure(currentPosition);
