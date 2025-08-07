@@ -75,7 +75,7 @@ class Main {
     function void main() {
         var int currentPosition;
         let currentPosition = 0;
-        while (currentPosition < 180) {
+        while (currentPosition < 32) {
             do Main.getModulus(currentPosition, 16);
             do Main.walking(currentPosition);
             do Sys.wait(1000);
